@@ -1,7 +1,13 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Habibun Noby",
+            "email": "habibun.noby@gmail.com"
+        }
+    ],
     "prefer-stable": true,
     "require": {
         "php": ">=7.2.5",
