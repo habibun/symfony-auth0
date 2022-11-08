@@ -10,30 +10,35 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        oauth_hwi:
+            id: hwi_oauth.user.provider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
-            provider: app_user_provider
-            custom_authenticator: App\Security\LoginFormAuthenticator
+#            anonymous: ~
+            provider: oauth_hwi
+            oauth:
+                resource_owners:
+                    auth0: "/auth0/callback"
+                login_path: /login
+                failure_path: /login
+                default_target_path: /list
+                oauth_user_provider:
+                    service: hwi_oauth.user.provider
+#            guard:
+#                authenticators:
+#                    - App\Security\LoginFormAuthenticator
+#            entry_point: oauth
             logout:
                 path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+                target: /
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
 when@test:
     security:
